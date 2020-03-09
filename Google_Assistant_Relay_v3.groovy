@@ -34,7 +34,7 @@
  */
 
 metadata {
-    definition (name: "Google Home Assistant Relay v3", namespace: "ryan780", author: "Ryan780") {
+    definition (name: "Google Home Assistant Relay v3", namespace: "ryan780", author: "Ryan780", importUrl: "https://raw.githubusercontent.com/ryancasler/Hubitat_Assistant_Relay/master/Google_Assistant_Relay_v3.groovy") {
         capability "Speech Synthesis"
         capability "Notification"
         command "newChildDevice", [[name: "New Child Device Name*", type: "STRING", description: "Enter the name of the new child device"]]

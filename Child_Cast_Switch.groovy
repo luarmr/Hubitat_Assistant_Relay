@@ -17,7 +17,7 @@
  *
  */
 metadata {
-    definition(name: "Child Cast Switch", namespace: "ryan780", author: "Ryan780") {
+    definition(name: "Child Cast Switch", namespace: "ryan780", author: "Ryan780", importURL: "https://raw.githubusercontent.com/ryancasler/Hubitat_Assistant_Relay/master/Child_Cast_Switch.groovy") {
         capability "Actuator"
         capability "Switch"
         command "toggle"
