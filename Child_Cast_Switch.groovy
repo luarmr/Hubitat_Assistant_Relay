@@ -13,7 +13,7 @@
  *  
  *    Date        Who            What
  *    ----        ---            ----
- *    2020-03-09  Ryan Casler    Initial Release
+ *    2020-03-12  Ryan Casler    Initial Release
  *
  */
 metadata {
@@ -23,6 +23,9 @@ metadata {
         command "toggle"
         command "castWebsite", [[name:"Website*", type: "STRING", description: "Enter the website to cast."]]
         command "castMedia", [[name:"Media Path or URL*", type: "STRING", description: "Enter the path or URL for the media to be cast."]]
+        command "stop"
+        command "mute"
+        command "unmute"
     }
     preferences{
         input "defaultType", "enum", title: "Cast Type", required: true, options:[["website":"Website"],["local":"Local Media"],["remote":"Remote Media"]]
@@ -76,19 +79,22 @@ def on() {
         unschedule(off)
         runIn (state.maxOn, off)
     }
-    sendEvent(name:"switch", value:"on")
+    sendEvent(name:"switch", value:"on",descriptionText:"Casting ${defaultContent} to ${castDevice}")
 }
 
 def off() {
     unschedule(off)
+    def descText = "Switch off, ${castDevice}"
     if (logEnable) log.debug "OFF called"
     if(enableStop){
         parent.stop(castDevice)
+        descText = descText + " stopped"
     }
     if (enableMute){
         parent.unmute(castDevice)
+        descText = descText + " unmutted"
     }
-    sendEvent(name: "switch", value:"off")
+    sendEvent(name: "switch", value:"off",descriptionText:descText)
 }
 
 def toggle(){
@@ -110,7 +116,7 @@ def castWebsite(website){
         if(state.maxOn){
             runIn (state.maxOn, off)
         }
-        sendEvent(name:"switch", value:"on")
+        sendEvent(name:"switch", value:"on",descriptionText:"Casting ${website} to ${castDevice}")
     }
 }
 
@@ -124,6 +130,21 @@ def castMedia(media){
         if(state.maxOn){
             runIn (state.maxOn, off)
         }
-        sendEvent(name:"switch", value:"on")
+        sendEvent(name:"switch", value:"on",descriptionText:"Casting ${media} to ${castDevice}")
     }
+}
+
+def stop(){
+    parent.stop(castDevice)
+    if (logEnable) log.debug "Stopping ${castDevice}"
+}
+
+def mute(){
+    parent.mute(castDevice)
+    if (logEnable) log.debug "Muting ${castDevice}"
+}
+
+def unmute(){
+    parent.unmute(castDevice)
+    if (logEnable) log.debug "Unmuting ${castDevice}"
 }

@@ -15,7 +15,7 @@
  *
  *    Date        Who            What
  *    ----        ---            ----
- *    2020-03-09  Ryan Casler    Initial Release
+ *    2020-03-12  Ryan Casler    Initial Release
  *
  *
  *  Based on the Google Assistnt Relay driver from Daniel Ogorchock 
@@ -50,7 +50,7 @@ metadata {
         input(name: "serverIP", type: "string", title:"Server IP Address", description: "Enter IP Address of your Assistant Relay Server", required: true, displayDuringSetup: true)
         input(name: "serverPort", type: "string", title:"Server Port", description: "Enter Port of your Assistant Relay Server (defaults to 3000)", defaultValue: "3000", required: true, displayDuringSetup: true)
         input(name: "user", type: "string", title:"Assistant Relay Username", description: "Enter the username for this device", defaultValue: "", required: false, displayDuringSetup: true)
-        input(name: "defaultDevice", type: "string", title:"Display Device IP or Name", description: "Enter the IP address or name of your dispplay device", required: true, displayDuringSetup: true)
+        input(name: "defaultDevice", type: "string", title:"Display Device IP or Name", description: "Enter the IP address or name of your dispplay device", required: false)
         input name: "logEnable", type: "bool", title: "Enable debug logging", defaultValue: true
     }
 }
@@ -169,8 +169,12 @@ def mute(castDevice){
 }
 
 def mute(){
-    if(logEnable)log.debug "Muting default device."
-    mute(defaultDevice)
+    if(defaultDevice){
+        if(logEnable)log.debug "Muting default device."
+        mute(defaultDevice)
+    }else{
+        log.warn "No default device speficied. Sepcify device in command parameter or driver properties."
+    }
 }
 
 def unmute(castDevice){
@@ -181,8 +185,12 @@ def unmute(castDevice){
 }
 
 def unmute(){
-    if(logEnable)log.debug "Unmuting default device."
-    unmute(defaultDevice)
+    if(defaultDevice){
+        if(logEnable)log.debug "Unmuting default device."
+        unmute(defaultDevice)
+    }else{
+        log.warn "No default device speficied. Sepcify device in command parameter or driver properties."
+    }
 }
 
 def castContent(castDevice, type, source){
@@ -234,8 +242,12 @@ def stop(String castDevice){
 }
 
 def stop(){
-    def castDevice = defaultDevice
-    stop(castDevice)
+    if(defaultDevice){
+        if(logEnable)log.debug "Stopping default device."
+        stop(defaultDevice)
+    }else{
+        log.warn "No default device speficied. Sepcify device in command parameter or driver properties."
+    }
 }
 
 def uninstalled(){
