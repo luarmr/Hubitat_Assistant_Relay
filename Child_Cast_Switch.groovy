@@ -28,9 +28,9 @@ metadata {
         command "unmute"
     }
     preferences{
-        input "defaultType", "enum", title: "Cast Type", required: true, options:[["website":"Website"],["local":"Local Media"],["remote":"Remote Media"]]
-        input "defaultContent", "string", title: "Website URL or media path", required: true
         input "castDevice", "string", title: "Device name", required: true
+        input "defaultType", "enum", title: "Cast Type", required: false, options:[["website":"Website"],["local":"Local Media"],["remote":"Remote Media"]]
+        input "defaultContent", "string", title: "Website URL or media path", required: false
         input "maxOn", "number", title: "Max On time in seconds", required: false, description:"Enter the Max On time, if desired"
         input name: "enableMute", type: "bool", title: "Enable mute/unmute", defaultValue: true
         input name: "enableStop", type: "bool", title: "Enable Stop after timeout", defaultValue: true
@@ -40,6 +40,7 @@ metadata {
 
 def installed(){
     updated()
+    state.maxOn = false
 }
 
 def logsOff() {
