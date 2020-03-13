@@ -13,7 +13,7 @@
  *  
  *    Date        Who            What
  *    ----        ---            ----
- *    2020-03-12  Ryan Casler    Initial Release
+ *    2020-03-13  Ryan Casler    Initial Release
  *
  */
 metadata {
@@ -41,6 +41,7 @@ metadata {
 def installed(){
     updated()
     state.maxOn = false
+    sendEvent(name:"switch", value:"off")
 }
 
 def logsOff() {
